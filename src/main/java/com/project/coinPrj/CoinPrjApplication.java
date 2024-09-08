@@ -1,0 +1,13 @@
+package com.project.coinPrj;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CoinPrjApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CoinPrjApplication.class, args);
+	}
+
+}
