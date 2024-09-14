@@ -15,10 +15,10 @@ public class MarketInfoVO extends JSONArray {
     private String coinKorName;    // 코인 한글명
 
     // 기본 생성자
-    public MarketInfoVO(String marketCode, String marketInfo, String coinCode, String coinEngName, String coinKorName) {}
+    public MarketInfoVO() {}
 
     // 파라미터를 받는 생성자
-    public MarketInfoVO(String marketCode, String coinEngName, String coinKorName) {
+    public MarketInfoVO(String marketCode, String marketInfo, String coinCode,String coinEngName, String coinKorName) {
         this.marketCode = marketCode;
         this.marketInfo = marketInfo;
         this.coinCode = coinCode;
@@ -77,11 +77,6 @@ public class MarketInfoVO extends JSONArray {
                 ", coinEngName='" + coinEngName + '\'' +
                 ", coinKorName='" + coinKorName + '\'' +
                 '}';
-    }
-
-    @Override
-    public void forEach(Consumer<? super Object> action) {
-        super.forEach(action);
     }
 }
 
