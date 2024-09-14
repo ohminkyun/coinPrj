@@ -46,6 +46,56 @@ public class databaseManager {
         }
     }
 
+    // 마켓정보 저장
+    public static void saveDailyPriceInfo(String marketCode, String trade_date, String marketInfo, String coinCode, Double opening_price, Double high_price, Double low_price, String prev_date, Double prev_closing_price, Double acc_trade_price, Double acc_trade_price_24h, Double acc_trade_volume, Double acc_trade_volume_24h, Double highest_52_week_price, String highest_52_week_date, Double lowest_52_week_price, String lowest_52_week_date) {
+
+        // SQL 저장 쿼리 작성
+        String sql = "INSERT INTO dailyprice (marketcode, trade_date, marketinfo, coincode, opening_price, high_price, low_price, prev_date, prev_closing_price, acc_trade_price, acc_trade_price_24h, acc_trade_volume, acc_trade_volume_24h, highest_52_week_price, highest_52_week_date, lowest_52_week_price, lowest_52_week_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON CONFLICT (marketcode, trade_date) DO UPDATE " +
+                "SET opening_price = EXCLUDED.opening_price, " +
+                "high_price = EXCLUDED.high_price, " +
+                "low_price = EXCLUDED.low_price, " +
+                "prev_date = EXCLUDED.prev_date, " +
+                "prev_closing_price = EXCLUDED.prev_closing_price, " +
+                "acc_trade_price = EXCLUDED.acc_trade_price, " +
+                "acc_trade_price_24h = EXCLUDED.acc_trade_price_24h, " +
+                "acc_trade_volume = EXCLUDED.acc_trade_volume, " +
+                "acc_trade_volume_24h = EXCLUDED.acc_trade_volume_24h, " +
+                "highest_52_week_price = EXCLUDED.highest_52_week_price, " +
+                "highest_52_week_date = EXCLUDED.highest_52_week_date, " +
+                "lowest_52_week_price = EXCLUDED.lowest_52_week_price, " +
+                "lowest_52_week_date = EXCLUDED.lowest_52_week_date ";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, marketCode);
+            pstmt.setString(2, trade_date);
+            pstmt.setString(3, marketInfo);
+            pstmt.setString(4, coinCode);
+            pstmt.setDouble(5, opening_price);
+            pstmt.setDouble(6, high_price);
+            pstmt.setDouble(7, low_price);
+            pstmt.setString(8, prev_date);
+            pstmt.setDouble(9, prev_closing_price);
+            pstmt.setDouble(10, acc_trade_price);
+            pstmt.setDouble(11, acc_trade_price_24h);
+            pstmt.setDouble(12, acc_trade_volume);
+            pstmt.setDouble(13, acc_trade_volume_24h);
+            pstmt.setDouble(14, highest_52_week_price);
+            pstmt.setString(15, highest_52_week_date);
+            pstmt.setDouble(16, lowest_52_week_price);
+            pstmt.setString(17, lowest_52_week_date);
+
+            // 쿼리 실행
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     // 상장일 정보 저장 못 사용함 ㅠㅠ
     public static void updateListingInfo(String marketCode, String listingDate) {
 
