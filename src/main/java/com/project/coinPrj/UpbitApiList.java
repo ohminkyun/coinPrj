@@ -42,6 +42,8 @@ public class UpbitApiList {
         JSONArray marketList = new JSONArray(response.toString());
 
         int rowCount = 0;
+        // 마켓 정보 삭제
+        databaseManager.updateMarketInfo();
 
         for (int i = 0; i < marketList.length(); i++) {
             JSONObject market = marketList.getJSONObject(i);
@@ -167,7 +169,7 @@ public class UpbitApiList {
 
         //중복처리 예외를 위한 가장 마지막 일자 조회
         databaseManager dao = new databaseManager();
-        toDate = dao.getLastDay(market, toDate);
+        //toDate = dao.getLastDay(market, toDate);
 
         // 입력된 문자열이 YYYYMMDD 형식임을 가정
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -294,17 +296,29 @@ public class UpbitApiList {
         try {
 
             // 전체 코인의 마켓 정보를 가져옴
-            //MarketInfoVO marketInfo = getUpbitMarketList();
+            MarketInfoVO marketInfo = getUpbitMarketList();
             databaseManager dao = new databaseManager();
             List<MarketInfoVO> marketCodes = dao.getMarketCodes();
 
+            //getDailyCandlePrice("BTC-USDS", "20241101", 200);
+
+
             // VO 객체 리스트 출력
             for (MarketInfoVO marketInfoVO : marketCodes) {
-                getDailyCandlePrice(marketInfoVO.getMarketCode(), "20240915", 200);
-                //getDailyCandlePrice("KRW-XEC", "20240915", 200);
+                System.out.println("코인이름은 : " + marketInfoVO.getCoinEngName() + " -- " + marketInfoVO.getMarketCode());
+                getDailyCandlePrice(marketInfoVO.getMarketCode(), "20250201", 11);
+
+                //특정 코인 수신 제외할 경우
+                /*if(marketInfoVO.getMarketCode().equals("KRW-BOUNTY")){
+                    System.out.println("스킵 : " + marketInfoVO.getMarketCode());
+                }else {
+                    System.out.println("코인이름은 : " + marketInfoVO.getCoinEngName() + " -- " + marketInfoVO.getMarketCode());
+                    getDailyCandlePrice(marketInfoVO.getMarketCode(), "20250121", 1);
+                    //getDailyCandlePrice("KRW-1INCH", "20240918", 7);
+                }*/
             }
 
-            //getDailyCandlePrice("KRW-BTC", "20171223", 200);
+            //getDailyCandlePrice("KRW-1INCH", "20240918", 7);
         } catch (Exception e) {
             e.printStackTrace();
         }

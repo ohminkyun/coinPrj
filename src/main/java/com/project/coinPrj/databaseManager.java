@@ -19,14 +19,31 @@ public class databaseManager {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
+    // 마켓정보 삭제
+    public static void updateMarketInfo() {
+
+        String sql = "UPDATE coinmaster SET listing_yn = 'R' ";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // 쿼리 실행
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     // 마켓정보 저장
     public static void saveMarketInfo(String marketCode, String marketInfo, String coinCode, String coinEngName, String coinKorName) {
 
-        String sql = "INSERT INTO coinmaster (marketcode, marketinfo, coincode, coinengname, coinkorname) " +
-                "VALUES (?, ?, ?, ?, ?) " +
+        String sql = "INSERT INTO coinmaster (marketcode, marketinfo, coincode, coinengname, coinkorname, listing_yn) " +
+                "VALUES (?, ?, ?, ?, ?, 'C') " +
                 "ON CONFLICT (marketcode, marketinfo, coincode) DO UPDATE " +
                 "SET coinengname = EXCLUDED.coinengname, " +
-                "coinkorname = EXCLUDED.coinkorname ";
+                "coinkorname = EXCLUDED.coinkorname, " +
+                "listing_yn = 'C' ";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -147,7 +164,7 @@ public class databaseManager {
     public List<MarketInfoVO> getMarketCodes() {
         List<MarketInfoVO> marketCodeList = new ArrayList<>();
         // SQL 쿼리
-        String sql = "SELECT marketcode FROM coinmaster WHERE listing_yn = 'N' AND marketinfo = 'BTC' ORDER BY marketcode limit 21";
+        String sql = "SELECT marketcode FROM coinmaster WHERE listing_yn in ('C') and marketinfo = 'KRW'";
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
