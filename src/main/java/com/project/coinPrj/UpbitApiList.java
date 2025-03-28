@@ -302,11 +302,13 @@ public class UpbitApiList {
 
             //getDailyCandlePrice("BTC-USDS", "20241101", 200);
 
+            int checkCount = 0;
 
             // VO 객체 리스트 출력
             for (MarketInfoVO marketInfoVO : marketCodes) {
-                System.out.println("코인이름은 : " + marketInfoVO.getCoinEngName() + " -- " + marketInfoVO.getMarketCode());
-                getDailyCandlePrice(marketInfoVO.getMarketCode(), "20250201", 11);
+                checkCount++;
+                System.out.println("코인이름은 : " + marketInfoVO.getCoinEngName() + " -- " + marketInfoVO.getMarketCode() + "--" + checkCount + "번째");
+                getDailyCandlePrice(marketInfoVO.getMarketCode(), "20250328", 3);
 
                 //특정 코인 수신 제외할 경우
                 /*if(marketInfoVO.getMarketCode().equals("KRW-BOUNTY")){
